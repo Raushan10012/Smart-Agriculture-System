@@ -1,0 +1,379 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Crop Disease Detection | Smart Agriculture Platform</title>
+  <script src="https://www.gstatic.com/antigravity/web/dev/tailwindcss.min.js"></script>
+  <link rel="stylesheet" href="css/styles.css">
+</head>
+<body class="bg-[#0a0f1d] text-slate-100 antialiased min-h-screen flex flex-col">
+
+  <!-- NAVIGATION BAR -->
+  <header class="sticky top-0 z-50 backdrop-blur-md bg-[#0a0f1d]/90 border-b border-slate-800">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between">
+      <!-- Brand & Sector -->
+      <div class="flex items-center space-x-3">
+        <a href="index.html" class="flex items-center space-x-3 group">
+          <div class="w-10 h-10 rounded-xl bg-blue-500/10 border border-blue-500/30 flex items-center justify-center text-blue-400 group-hover:border-blue-500/60 transition">
+            <svg class="w-5 h-5 text-blue-400" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M12 2C6.5 2 2 6.5 2 12c0 3.5 1.8 6.5 4.5 8.2M12 2c5.5 0 10 4.5 10 10 0 3.5-1.8 6.5-4.5 8.2M12 2v20m0-12l4-4m-4 8l-4-4m4 8l4-4" />
+            </svg>
+          </div>
+          <div>
+            <div class="flex items-center gap-2">
+              <span class="font-bold text-lg tracking-tight text-white">SmartAgri</span>
+              <span class="text-[11px] font-semibold px-2 py-0.5 rounded-full bg-blue-500/10 text-blue-400 border border-blue-500/30">IoT & AI</span>
+            </div>
+            <span class="text-[11px] block text-slate-400 -mt-0.5">Smart Agriculture & Disease Detection System</span>
+          </div>
+        </a>
+      </div>
+
+      <nav class="hidden md:flex items-center space-x-1 lg:space-x-2 text-xs font-semibold">
+        <a href="index.html" class="px-3 py-1.5 rounded-lg text-slate-300 hover:text-white hover:bg-slate-800 transition">
+          Overview
+        </a>
+        <a href="disease-detection.html" class="px-3 py-1.5 rounded-lg bg-blue-500/10 text-blue-400 border border-blue-500/30 transition">
+          Disease Scanner
+        </a>
+        <a href="device-manager.html" class="px-3 py-1.5 rounded-lg text-slate-300 hover:text-white hover:bg-slate-800 transition">
+          Device Manager
+        </a>
+        <a href="telemetry.html" class="px-3 py-1.5 rounded-lg text-slate-300 hover:text-white hover:bg-slate-800 transition">
+          Live Telemetry
+        </a>
+      </nav>
+
+      <div class="flex items-center space-x-2">
+        <button onclick="startLiveCamera()" class="px-3.5 py-1.5 rounded-lg text-xs font-semibold bg-blue-600 hover:bg-blue-500 text-white shadow-sm transition flex items-center gap-1.5">
+          <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 9a2 2 0 012-2h.93a2 2 0 001.664-.89l.812-1.22A2 2 0 0110.07 4h3.86a2 2 0 011.664.89l.812 1.22A2 2 0 0018.07 7H19a2 2 0 012 2v9a2 2 0 01-2 2H5a2 2 0 01-2-2V9z"></path><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 13a3 3 0 11-6 0 3 3 0 016 0z"></path></svg>
+          <span>Open Camera</span>
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <!-- MAIN CONTAINER -->
+  <main class="flex-1 max-w-7xl w-full mx-auto px-4 sm:px-6 lg:px-8 py-8">
+    <div class="flex flex-col md:flex-row md:items-end justify-between mb-8 pb-6 border-b border-slate-800">
+      <div>
+        <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full text-xs font-semibold bg-blue-500/10 text-blue-400 border border-blue-500/20 mb-3">
+          <span>🔬 AI-Powered Foliar Pathology</span>
+        </div>
+        <h1 class="text-2xl sm:text-3xl font-extrabold text-white">Crop Disease Scanner & Treatment Advisor</h1>
+        <p class="text-slate-400 text-xs sm:text-sm mt-1 max-w-2xl">
+          Upload a high-resolution leaf photograph from your computer or snap a photo directly using your smartphone's camera. The edge model analyzes lesion morphology and recommends verified agronomic treatments.
+        </p>
+      </div>
+      <div class="mt-4 md:mt-0 flex flex-wrap gap-2">
+        <button onclick="openMobilePairingModal()" class="px-4 py-2 bg-blue-600 hover:bg-blue-500 text-white text-xs font-bold rounded-xl shadow-md transition flex items-center gap-2">
+          <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 18h.01M8 21h8a2 2 0 002-2V5a2 2 0 00-2-2H8a2 2 0 00-2 2v14a2 2 0 002 2z"></path></svg>
+          <span>Connect Mobile Camera</span>
+        </button>
+        <button onclick="startLiveCamera()" class="px-4 py-2 bg-slate-800 hover:bg-slate-700 text-slate-200 border border-slate-700 text-xs font-semibold rounded-xl transition flex items-center gap-1.5">
+          <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 10l4.553-2.276A1 1 0 0121 8.618v6.764a1 1 0 01-1.447.894L15 14M5 18h8a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v8a2 2 0 002 2z"></path></svg>
+          <span>Desktop Camera</span>
+        </button>
+        <button onclick="document.getElementById('leaf-file-input').click()" class="px-4 py-2 bg-slate-800 hover:bg-slate-700 text-slate-200 border border-slate-700 text-xs font-semibold rounded-xl transition flex items-center gap-1.5">
+          <svg class="w-4 h-4 text-sky-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12"></path></svg>
+          <span>Browse File</span>
+        </button>
+      </div>
+    </div>
+
+    <!-- Hidden Native Inputs -->
+    <input type="file" id="leaf-file-input" accept="image/*" class="hidden">
+    <input type="file" id="camera-capture-input" accept="image/*" capture="environment" class="hidden">
+
+    <!-- UPLOAD & DIAGNOSTIC WORKSPACE -->
+    <div class="grid grid-cols-1 lg:grid-cols-12 gap-8">
+      
+      <!-- Left Column: Input & Image Preview -->
+      <div class="lg:col-span-5 space-y-6">
+        
+        <!-- Mobile Camera Pairing Callout Card -->
+        <div class="bg-gradient-to-r from-slate-950/40 via-slate-900 to-slate-950/40 border border-blue-500/30 p-4 rounded-2xl flex items-center justify-between gap-3 shadow-sm">
+          <div class="flex items-center gap-3">
+            <div class="w-10 h-10 rounded-xl bg-blue-500/20 text-blue-400 flex items-center justify-center font-bold text-lg">
+              📱
+            </div>
+            <div>
+              <span class="text-xs font-bold text-white block">Connect Mobile Camera</span>
+              <span class="text-[11px] text-slate-400 block">Snap with your phone camera, scan here</span>
+            </div>
+          </div>
+          <button onclick="openMobilePairingModal()" class="px-3.5 py-1.5 bg-blue-600 hover:bg-blue-500 text-white font-bold text-xs rounded-xl shadow transition flex-shrink-0">
+            Pair Phone →
+          </button>
+        </div>
+
+        <!-- Drag and Drop Box -->
+        <div id="drop-zone" class="border-2 border-dashed border-slate-700 hover:border-blue-500/80 rounded-2xl p-6 text-center transition cursor-pointer bg-slate-950/60" onclick="document.getElementById('leaf-file-input').click()">
+          <div class="w-14 h-14 rounded-2xl bg-slate-950/60 border border-blue-500/30 text-blue-400 mx-auto flex items-center justify-center text-2xl mb-3 shadow-inner">
+            📤
+          </div>
+          <h3 class="text-sm font-bold text-white">Upload Crop Leaf Image</h3>
+          <p class="text-xs text-slate-400 mt-1">Drag and drop file here, or click to browse</p>
+          <div class="mt-3 flex items-center justify-center gap-2 text-[11px] text-slate-500">
+            <span>Supports JPG, PNG, WebP</span>
+            <span>•</span>
+            <span>Up to 25 MB</span>
+          </div>
+        </div>
+
+        <!-- Quick Sample Options -->
+        <div class="bg-slate-950 border border-slate-800 p-4 rounded-2xl">
+          <span class="text-xs font-semibold text-slate-400 block mb-2">Or test with verified sample leaves:</span>
+          <div class="grid grid-cols-3 gap-2">
+            <button onclick="loadPredefinedSample(0)" class="p-2.5 rounded-xl bg-[#0a0f1d] hover:bg-slate-800 border border-slate-800 text-left transition">
+              <span class="text-base block">🍁</span>
+              <span class="text-[11px] font-semibold text-slate-200 block truncate mt-1">Early Blight</span>
+              <span class="text-[9px] text-slate-500">Tomato</span>
+            </button>
+            <button onclick="loadPredefinedSample(1)" class="p-2.5 rounded-xl bg-[#0a0f1d] hover:bg-slate-800 border border-slate-800 text-left transition">
+              <span class="text-base block">🍂</span>
+              <span class="text-[11px] font-semibold text-slate-200 block truncate mt-1">Late Blight</span>
+              <span class="text-[9px] text-slate-500">Potato</span>
+            </button>
+            <button onclick="loadPredefinedSample(2)" class="p-2.5 rounded-xl bg-[#0a0f1d] hover:bg-slate-800 border border-slate-800 text-left transition">
+              <span class="text-base block">🌿</span>
+              <span class="text-[11px] font-semibold text-slate-200 block truncate mt-1">Healthy</span>
+              <span class="text-[9px] text-slate-500">Optimal</span>
+            </button>
+          </div>
+        </div>
+
+        <!-- Image Preview Card -->
+        <div class="bg-slate-950 border border-slate-800 p-4 rounded-2xl">
+          <div class="flex items-center justify-between mb-3">
+            <span class="text-xs font-bold text-slate-300">Target Leaf Preview</span>
+            <span id="scan-status-text" class="text-[11px] text-blue-400 font-mono-code">Awaiting input...</span>
+          </div>
+
+          <div class="relative w-full aspect-square rounded-xl overflow-hidden bg-[#0a0f1d] border border-slate-800 flex items-center justify-center">
+            <div id="preview-empty" class="text-center p-6 text-slate-500">
+              <span class="text-4xl block mb-2">🍃</span>
+              <span class="text-xs">No image loaded yet.</span>
+            </div>
+
+            <div id="preview-container" class="hidden w-full h-full relative">
+              <img id="preview-img" src="" alt="Selected leaf" class="w-full h-full object-cover">
+              <div id="scan-laser" class="laser-line hidden"></div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Right Column: Diagnostic Findings & Treatment Action Plan -->
+      <div class="lg:col-span-7">
+        <div class="bg-slate-950 border border-slate-800 p-6 rounded-2xl h-full flex flex-col justify-between">
+          <div>
+            <div class="flex items-center justify-between pb-4 border-b border-slate-800/80 mb-6">
+              <h2 class="text-base font-bold text-white flex items-center gap-2">
+                <span>📋 Foliar Diagnostic Assessment</span>
+              </h2>
+              <span id="res-severity-badge" class="px-2.5 py-1 rounded-full text-xs font-semibold bg-slate-800 text-slate-400 border border-slate-700">
+                Pending Diagnosis
+              </span>
+            </div>
+
+            <!-- Empty Placeholder -->
+            <div id="diagnosis-empty-placeholder" class="py-20 text-center text-slate-500 text-xs">
+              <div class="w-12 h-12 rounded-xl bg-[#0a0f1d] text-slate-600 mx-auto flex items-center justify-center text-2xl mb-3">
+                🔍
+              </div>
+              <p>Upload a photo or connect your phone camera to view diagnosis.</p>
+            </div>
+
+            <!-- Full Diagnostic Results -->
+            <div id="diagnosis-results" class="hidden space-y-6">
+              <!-- Header Classification -->
+              <div class="bg-[#0a0f1d] border border-slate-800 p-5 rounded-xl">
+                <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                  <div>
+                    <span class="text-xs text-slate-400 block">Host Crop:</span>
+                    <span id="res-crop-name" class="text-sm font-bold text-white block mt-0.5">Tomato (Solanum lycopersicum)</span>
+                  </div>
+                  <div>
+                    <span class="text-xs text-slate-400 block">Diagnosed Disease:</span>
+                    <span id="res-disease-name" class="text-base font-extrabold text-blue-400 block mt-0.5">Early Blight</span>
+                  </div>
+                </div>
+
+                <div class="mt-4 pt-3 border-t border-slate-800 flex items-center justify-between text-xs">
+                  <span class="text-slate-400">Diagnostic Confidence:</span>
+                  <span id="res-conf-val" class="font-bold text-blue-400">96.4%</span>
+                </div>
+                <div class="w-full bg-slate-800 rounded-full h-1.5 mt-1 overflow-hidden">
+                  <div id="res-conf-bar" class="bg-blue-500 h-1.5 rounded-full" style="width: 96.4%"></div>
+                </div>
+              </div>
+
+              <!-- Pathology Details -->
+              <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                <div class="bg-[#0a0f1d] p-4 rounded-xl border border-slate-800">
+                  <span class="text-xs text-slate-400 block font-semibold">Causal Pathogen</span>
+                  <span id="res-pathogen" class="text-xs font-medium text-slate-200 mt-1 block">Alternaria solani (Fungal)</span>
+                </div>
+                <div class="bg-[#0a0f1d] p-4 rounded-xl border border-slate-800">
+                  <span class="text-xs text-slate-400 block font-semibold">Severity Rating</span>
+                  <span id="res-severity" class="text-xs font-medium text-slate-200 mt-1 block">Moderate (Level 3/5)</span>
+                </div>
+              </div>
+
+              <!-- Characteristic Symptoms -->
+              <div class="bg-[#0a0f1d] p-4 rounded-xl border border-slate-800">
+                <span class="text-xs font-bold text-slate-300 block mb-1">Visual Symptoms & Manifestation:</span>
+                <p id="res-symptoms" class="text-xs text-slate-300 leading-relaxed">
+                  Target-like dark brown concentric rings surrounded by yellow chlorotic halos on older leaves.
+                </p>
+              </div>
+
+              <!-- Treatment Strategies -->
+              <div class="space-y-3">
+                <div class="bg-slate-950/40 border border-blue-600/30 p-4 rounded-xl">
+                  <span class="text-xs font-bold text-blue-300 block mb-1">🌱 Organic & Biological Treatment:</span>
+                  <p id="res-organic" class="text-xs text-blue-100 leading-relaxed">
+                    Spray bio-fungicide Bacillus subtilis or cold-pressed neem oil (5 ml/L). Prune lower leaves touching soil.
+                  </p>
+                </div>
+
+                <div class="bg-blue-950/40 border border-blue-600/30 p-4 rounded-xl">
+                  <span class="text-xs font-bold text-blue-300 block mb-1">🧪 Targeted Chemical Intervention:</span>
+                  <p id="res-chemical" class="text-xs text-blue-100 leading-relaxed">
+                    Apply Chlorothalonil 75 WP (2g/L) or Azoxystrobin 23 SC (1 ml/L). Repeat after 10-12 days if rainfall occurs.
+                  </p>
+                </div>
+
+                <div class="bg-[#0a0f1d] p-4 rounded-xl border border-slate-800">
+                  <span class="text-xs font-bold text-slate-300 block mb-1">🛡️ Preventive Protocol for Next Season:</span>
+                  <p id="res-prevention" class="text-xs text-slate-300 leading-relaxed">
+                    Implement 3-year crop rotation with non-solanaceous crops. Use drip irrigation instead of overhead sprinklers.
+                  </p>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="mt-6 pt-4 border-t border-slate-900 flex items-center justify-between text-xs text-slate-500">
+            <span>Powered by Edge MobileNetV3 Architecture</span>
+            <button onclick="window.print()" class="text-blue-400 hover:text-blue-300 font-semibold transition">
+              🖨️ Print / Save Prescription
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </main>
+
+  <!-- LIVE WEBCAM / DESKTOP STREAM MODAL -->
+  <div id="camera-modal" class="hidden fixed inset-0 z-50 bg-black/85 backdrop-blur-sm flex items-center justify-center p-4">
+    <div class="bg-[#0a0f1d] border border-slate-700 rounded-2xl max-w-lg w-full overflow-hidden shadow-2xl">
+      <div class="p-4 bg-slate-950 border-b border-slate-800 flex items-center justify-between">
+        <h3 class="text-sm font-bold text-white flex items-center gap-2">
+          <span class="w-2.5 h-2.5 rounded-full bg-red-500 animate-pulse"></span>
+          Live Webcam Capture
+        </h3>
+        <button onclick="closeCameraModal()" class="text-slate-400 hover:text-white text-lg font-bold">✕</button>
+      </div>
+
+      <div class="p-4">
+        <div class="relative w-full aspect-video bg-black rounded-xl overflow-hidden border border-slate-800">
+          <video id="camera-video" autoplay playsinline class="w-full h-full object-cover"></video>
+          <div class="absolute inset-x-8 inset-y-6 border-2 border-dashed border-blue-500/60 rounded-xl pointer-events-none flex items-center justify-center">
+            <span class="text-[11px] text-blue-400/80 bg-black/50 px-2 py-0.5 rounded">Align crop leaf inside frame</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="p-4 bg-slate-950 border-t border-slate-800 flex justify-end gap-2">
+        <button onclick="closeCameraModal()" class="px-4 py-2 bg-slate-800 hover:bg-slate-700 text-slate-300 text-xs font-semibold rounded-xl">
+          Cancel
+        </button>
+        <button onclick="captureFromLiveStream()" class="px-5 py-2 bg-blue-600 hover:bg-blue-500 text-white text-xs font-semibold rounded-xl shadow">
+          📸 Capture & Analyze Leaf
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- CONNECT MOBILE PHONE AS WIRELESS CAMERA SCANNER MODAL -->
+  <div id="mobile-pairing-modal" class="hidden fixed inset-0 z-50 bg-black/85 backdrop-blur-sm flex items-center justify-center p-4">
+    <div class="bg-[#0a0f1d] border border-slate-700 rounded-3xl max-w-md w-full overflow-hidden shadow-2xl">
+      <!-- Header -->
+      <div class="p-5 bg-slate-950 border-b border-slate-800 flex items-center justify-between">
+        <div class="flex items-center gap-2.5">
+          <div class="w-10 h-10 rounded-xl bg-blue-500/20 text-blue-400 flex items-center justify-center font-bold text-xl shadow-inner border border-blue-500/30">
+            📱
+          </div>
+          <div>
+            <h3 class="text-sm font-bold text-white">Connect Mobile Phone</h3>
+            <span class="text-[11px] text-slate-400">Wireless Phone Camera Scanner</span>
+          </div>
+        </div>
+        <button onclick="closeMobilePairingModal()" class="text-slate-400 hover:text-white text-lg font-bold">✕</button>
+      </div>
+
+      <!-- Body -->
+      <div class="p-6 space-y-4 text-center">
+        <!-- Live Connection Status Pill -->
+        <div id="mobile-pair-status-pill" class="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full text-xs font-semibold bg-blue-950/60 text-blue-300 border border-blue-600/40">
+          <span class="w-2 h-2 rounded-full bg-blue-400 animate-ping"></span>
+          <span id="mobile-pair-status-text">Waiting for phone to scan QR code...</span>
+        </div>
+
+        <!-- QR Code Display Box -->
+        <div class="bg-white p-3.5 rounded-2xl w-44 h-44 mx-auto flex items-center justify-center shadow-lg border-2 border-slate-700">
+          <div id="mobile-qr-container" class="flex items-center justify-center"></div>
+        </div>
+
+        <p class="text-xs text-slate-300 leading-relaxed max-w-xs mx-auto">
+          Scan with your smartphone camera, or open the companion portal below:
+        </p>
+
+        <!-- Direct Actions -->
+        <div class="space-y-2 pt-1">
+          <!-- One-click Demo Button (opens simulated phone window) -->
+          <button onclick="openMobilePopup()" class="w-full py-2.5 rounded-xl bg-blue-600 hover:bg-blue-500 text-white font-bold text-xs shadow-md transition flex items-center justify-center gap-2">
+            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 18h.01M8 21h8a2 2 0 002-2V5a2 2 0 00-2-2H8a2 2 0 00-2 2v14a2 2 0 002 2z"></path></svg>
+            <span>Open Mobile Viewfinder (Popup Simulation)</span>
+          </button>
+
+          <!-- Copy Link -->
+          <div class="flex gap-2">
+            <input type="text" id="mobile-link-input" readonly class="flex-1 bg-slate-950 border border-slate-800 rounded-xl px-3 py-2 text-[11px] text-slate-400 font-mono select-all">
+            <button onclick="copyMobileLink()" class="px-3 py-2 bg-slate-800 hover:bg-slate-700 text-slate-200 text-xs font-semibold rounded-xl border border-slate-700 transition">
+              Copy Link
+            </button>
+          </div>
+        </div>
+
+        <!-- How It Works Steps -->
+        <div class="text-left bg-slate-950 p-3.5 rounded-xl border border-slate-800 text-[11px] text-slate-400 space-y-1.5">
+          <p class="font-bold text-slate-200">Workflow:</p>
+          <p>1. Open link on mobile &rarr; phone requests camera permission.</p>
+          <p>2. Tap <strong>Allow</strong> to activate live mobile viewfinder.</p>
+          <p>3. Tap the green <strong>Shutter button</strong> to snap the crop leaf.</p>
+          <p>4. Photo transmits here automatically and begins instant AI diagnosis!</p>
+        </div>
+      </div>
+
+      <!-- Footer -->
+      <div class="p-4 bg-slate-950 border-t border-slate-800 flex justify-end">
+        <button onclick="closeMobilePairingModal()" class="px-4 py-1.5 rounded-xl bg-slate-800 text-slate-300 text-xs font-semibold hover:bg-slate-700 transition">
+          Close
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <footer class="bg-slate-950 border-t border-slate-800 py-6 text-xs text-slate-500 text-center">
+    <p>Smart Agriculture Crop Pathology & Edge Intelligence Platform</p>
+  </footer>
+
+  <script src="js/app.js"></script>
+  <script src="js/qrcode.min.js"></script>
+  <script src="js/detector.js"></script>
+</body>
+</html>

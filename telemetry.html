@@ -1,0 +1,280 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Live Sensor Telemetry | Smart Agriculture Platform</title>
+  <script src="https://www.gstatic.com/antigravity/web/dev/tailwindcss.min.js"></script>
+  <link rel="stylesheet" href="css/styles.css">
+</head>
+<body class="bg-[#0a0f1d] text-slate-100 antialiased min-h-screen flex flex-col">
+
+  <!-- NAVIGATION BAR -->
+  <header class="sticky top-0 z-50 backdrop-blur-md bg-[#0a0f1d]/90 border-b border-slate-800">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between">
+      <!-- Brand & Sector -->
+      <div class="flex items-center space-x-3">
+        <a href="index.html" class="flex items-center space-x-3 group">
+          <div class="w-10 h-10 rounded-xl bg-blue-500/10 border border-blue-500/30 flex items-center justify-center text-blue-400 group-hover:border-blue-500/60 transition">
+            <svg class="w-5 h-5 text-blue-400" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M12 2C6.5 2 2 6.5 2 12c0 3.5 1.8 6.5 4.5 8.2M12 2c5.5 0 10 4.5 10 10 0 3.5-1.8 6.5-4.5 8.2M12 2v20m0-12l4-4m-4 8l-4-4m4 8l4-4" />
+            </svg>
+          </div>
+          <div>
+            <div class="flex items-center gap-2">
+              <span class="font-bold text-lg tracking-tight text-white">SmartAgri</span>
+              <span class="text-[11px] font-semibold px-2 py-0.5 rounded-full bg-blue-500/10 text-blue-400 border border-blue-500/30">IoT & AI</span>
+            </div>
+            <span class="text-[11px] block text-slate-400 -mt-0.5">Smart Agriculture & Disease Detection System</span>
+          </div>
+        </a>
+      </div>
+
+      <nav class="hidden md:flex items-center space-x-1 lg:space-x-2 text-xs font-semibold">
+        <a href="index.html" class="px-3 py-1.5 rounded-lg text-slate-300 hover:text-white hover:bg-slate-800 transition">
+          Overview
+        </a>
+        <a href="disease-detection.html" class="px-3 py-1.5 rounded-lg text-slate-300 hover:text-white hover:bg-slate-800 transition">
+          Disease Scanner
+        </a>
+        <a href="device-manager.html" class="px-3 py-1.5 rounded-lg text-slate-300 hover:text-white hover:bg-slate-800 transition">
+          Device Manager
+        </a>
+        <a href="telemetry.html" class="px-3 py-1.5 rounded-lg bg-blue-500/10 text-blue-400 border border-blue-500/30 transition">
+          Live Telemetry
+        </a>
+      </nav>
+
+      <div class="flex items-center space-x-3">
+        <a href="device-manager.html" class="px-3.5 py-1.5 rounded-lg text-xs font-semibold bg-slate-800 hover:bg-slate-700 text-slate-200 border border-slate-700 transition flex items-center gap-1.5">
+          <svg class="w-3.5 h-3.5 text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z"></path><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"></path></svg>
+          <span>Manage Devices</span>
+        </a>
+      </div>
+    </div>
+  </header>
+
+  <!-- MAIN CONTAINER -->
+  <main class="flex-1 max-w-7xl w-full mx-auto px-4 sm:px-6 lg:px-8 py-8">
+    
+    <!-- EMPTY STATE (IF NO DEVICES PAIRED) -->
+    <div id="telemetry-empty-state" class="hidden py-24 text-center border-2 border-dashed border-slate-800 rounded-3xl bg-slate-950/60 p-8">
+      <div class="w-16 h-16 rounded-2xl bg-slate-800 text-slate-400 mx-auto flex items-center justify-center text-3xl mb-4">
+        📡
+      </div>
+      <h2 class="text-lg font-bold text-white">No Paired Sensor Devices Found</h2>
+      <p class="text-xs text-slate-400 mt-1 max-w-md mx-auto leading-relaxed">
+        To start measuring soil moisture, microclimatic telemetry, and controlling irrigation pumps, please add and pair a field device first.
+      </p>
+      <a href="device-manager.html" class="mt-6 inline-flex items-center px-5 py-2.5 bg-blue-600 hover:bg-blue-500 text-white font-semibold text-xs rounded-xl shadow transition">
+        + Pair Sensor Hardware in Device Manager
+      </a>
+    </div>
+
+    <!-- MAIN TELEMETRY DASHBOARD (WHEN DEVICES ARE CONNECTED) -->
+    <div id="telemetry-main-view">
+      
+      <!-- Top Control Header -->
+      <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-8 pb-6 border-b border-slate-800">
+        <div>
+          <div class="flex items-center gap-2 mb-1">
+            <span class="w-2.5 h-2.5 rounded-full bg-blue-500 animate-pulse"></span>
+            <span class="text-xs font-bold text-blue-400 tracking-wider uppercase">Live Field Sensor Stream</span>
+          </div>
+          <h1 id="t-dev-name" class="text-2xl sm:text-3xl font-extrabold text-white">Greenhouse Alpha - Soil Probe</h1>
+          <p class="text-slate-400 text-xs mt-1">
+            Zone: <span id="t-dev-zone" class="text-slate-300 font-semibold">Zone A</span> • 
+            Hardware UID: <span id="t-dev-mac" class="text-slate-300 font-mono-code">24:6F:28:B4:72:A0</span> • 
+            Protocol: <span id="t-dev-protocol" class="text-slate-300">WiFi / MQTT</span>
+          </p>
+        </div>
+
+        <div class="flex items-center gap-3">
+          <label class="text-xs text-slate-400 font-medium">Switch Device:</label>
+          <select id="telemetry-device-select" class="px-3.5 py-2 bg-slate-950 border border-slate-800 rounded-xl text-white text-xs font-semibold focus:outline-none focus:border-blue-500">
+            <!-- Injected via telemetry.js -->
+          </select>
+        </div>
+      </div>
+
+      <!-- Live Metric Gauges Grid -->
+      <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 mb-8">
+        <!-- Moisture Card -->
+        <div class="bg-slate-950 border border-slate-800 p-5 rounded-2xl">
+          <div class="flex items-center justify-between mb-2">
+            <span class="text-xs font-semibold text-slate-400">Soil Moisture (VWC)</span>
+            <span id="status-moist-badge" class="text-[10px] px-2 py-0.5 rounded font-semibold bg-slate-950 text-blue-400 border border-slate-800/40">Optimal Range</span>
+          </div>
+          <div class="flex items-baseline gap-2">
+            <span id="val-moist" class="text-3xl font-extrabold text-blue-400">32.4%</span>
+            <span class="text-xs text-slate-500">volumetric</span>
+          </div>
+          <div class="mt-3 text-[11px] text-slate-500 flex justify-between">
+            <span>Threshold: 30.0%</span>
+            <span>Probe: Capacitive v1.2</span>
+          </div>
+        </div>
+
+        <!-- Temperature Card -->
+        <div class="bg-slate-950 border border-slate-800 p-5 rounded-2xl">
+          <div class="flex items-center justify-between mb-2">
+            <span class="text-xs font-semibold text-slate-400">Soil Temperature</span>
+            <span class="text-[10px] px-2 py-0.5 rounded font-semibold bg-slate-800 text-slate-400">Normal</span>
+          </div>
+          <div class="flex items-baseline gap-2">
+            <span id="val-temp" class="text-3xl font-extrabold text-amber-400">24.2 °C</span>
+            <span class="text-xs text-slate-500">celsius</span>
+          </div>
+          <div class="mt-3 text-[11px] text-slate-500 flex justify-between">
+            <span>Diurnal Peak: 28.5 °C</span>
+            <span>Sensor: DS18B20</span>
+          </div>
+        </div>
+
+        <!-- Humidity Card -->
+        <div class="bg-slate-950 border border-slate-800 p-5 rounded-2xl">
+          <div class="flex items-center justify-between mb-2">
+            <span class="text-xs font-semibold text-slate-400">Canopy Humidity</span>
+            <span class="text-[10px] px-2 py-0.5 rounded font-semibold bg-slate-800 text-slate-400">Stable</span>
+          </div>
+          <div class="flex items-baseline gap-2">
+            <span id="val-hum" class="text-3xl font-extrabold text-blue-400">65.0%</span>
+            <span class="text-xs text-slate-500">RH</span>
+          </div>
+          <div class="mt-3 text-[11px] text-slate-500 flex justify-between">
+            <span>Dew Point: 17.2 °C</span>
+            <span>Sensor: DHT22</span>
+          </div>
+        </div>
+
+        <!-- NPK Nutrients Card -->
+        <div class="bg-slate-950 border border-slate-800 p-5 rounded-2xl">
+          <div class="flex items-center justify-between mb-2">
+            <span class="text-xs font-semibold text-slate-400">Soil Fertility (NPK)</span>
+            <span class="text-[10px] px-2 py-0.5 rounded font-semibold bg-slate-950 text-blue-400 border border-slate-800/40">Adequate</span>
+          </div>
+          <div class="flex items-baseline gap-2">
+            <span class="text-xl font-bold text-blue-400">N:42 • P:28 • K:35</span>
+          </div>
+          <div class="mt-3 text-[11px] text-slate-500 flex justify-between">
+            <span>Unit: mg/kg</span>
+            <span>Modbus RS485</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- WORKSPACE: Chart & Irrigation Relay Controls -->
+      <div class="grid grid-cols-1 lg:grid-cols-12 gap-8">
+        
+        <!-- Left: Live Telemetry Dynamic Streaming Chart -->
+        <div class="lg:col-span-7 bg-slate-950 border border-slate-800 p-6 rounded-2xl flex flex-col justify-between">
+          <div>
+            <div class="flex items-center justify-between mb-2">
+              <h3 class="text-sm font-bold text-white flex items-center gap-2">
+                <span>📈 Live Soil Moisture Stream</span>
+              </h3>
+              <span class="text-[11px] text-blue-400 font-mono-code">Updating every 3s</span>
+            </div>
+            <p class="text-xs text-slate-400 mb-4">Continuous sampling of volumetric soil water content.</p>
+
+            <!-- Live SVG Chart -->
+            <div class="w-full h-48 bg-[#0a0f1d] border border-slate-800 rounded-xl p-3 relative flex items-center justify-center">
+              <svg class="w-full h-full" viewBox="0 0 320 120">
+                <!-- Grid Lines -->
+                <line x1="0" y1="30" x2="320" y2="30" stroke="#1e293b" stroke-dasharray="3,3" stroke-width="1"></line>
+                <line x1="0" y1="60" x2="320" y2="60" stroke="#1e293b" stroke-dasharray="3,3" stroke-width="1"></line>
+                <line x1="0" y1="90" x2="320" y2="90" stroke="#1e293b" stroke-dasharray="3,3" stroke-width="1"></line>
+
+                <!-- 30% Irrigation Threshold Reference Line -->
+                <line x1="0" y1="80" x2="320" y2="80" stroke="#ef4444" stroke-dasharray="4,2" stroke-width="1.2"></line>
+                <text x="5" y="76" font-size="8" fill="#ef4444">30% Auto-Pump Threshold</text>
+
+                <!-- Streaming Polyline -->
+                <polyline id="live-chart-poly" fill="none" stroke="#3b82f6" stroke-width="2.5" points="0,60 50,62 100,58 150,65 200,60 250,55 320,59"></polyline>
+              </svg>
+            </div>
+          </div>
+
+          <!-- Interactive Simulator Slider -->
+          <div class="mt-6 pt-4 border-t border-slate-800/80">
+            <div class="flex justify-between items-center mb-1 text-xs">
+              <span class="text-slate-300 font-semibold">Simulate / Calibrate Soil Moisture:</span>
+              <span id="slider-readout" class="font-bold text-blue-400">32%</span>
+            </div>
+            <input type="range" id="t-moist-slider" min="15" max="65" value="32" oninput="handleSliderMoistureInput(this.value)" class="w-full accent-blue-500 h-1.5 bg-slate-800 rounded-lg cursor-pointer">
+            <div class="flex justify-between text-[10px] text-slate-500 mt-1">
+              <span>15% (Dry / Stress)</span>
+              <span class="text-red-400 font-semibold">30% (Pump Threshold)</span>
+              <span>65% (Saturated)</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Right: Irrigation Pump Relay Actuation System -->
+        <div class="lg:col-span-5 bg-slate-950 border border-slate-800 p-6 rounded-2xl flex flex-col justify-between">
+          <div>
+            <div class="flex items-center justify-between pb-3 border-b border-slate-800 mb-6">
+              <h3 class="text-sm font-bold text-white flex items-center gap-2">
+                <span>🚰 Smart Irrigation Relay</span>
+              </h3>
+              <span id="pump-active-badge" class="px-3 py-1 rounded-full text-xs font-bold bg-slate-800 text-slate-400 border border-slate-700">
+                PUMP STANDBY (OFF)
+              </span>
+            </div>
+
+            <!-- Pump Visual Indicator -->
+            <div class="p-6 rounded-2xl bg-[#0a0f1d] border border-slate-800 text-center mb-6">
+              <div id="pump-status-icon" class="text-5xl mb-2">💧</div>
+              <p id="pump-status-text" class="text-xs text-slate-300 leading-relaxed max-w-xs mx-auto">
+                Moisture levels sufficient (32.4%). Relay circuit de-energized.
+              </p>
+            </div>
+
+            <!-- Configuration Parameters -->
+            <div class="space-y-3 text-xs">
+              <div class="flex items-center justify-between p-3 rounded-xl bg-[#0a0f1d] border border-slate-800">
+                <div>
+                  <span class="font-semibold text-slate-200 block">Irrigation Trigger Threshold</span>
+                  <span class="text-[10px] text-slate-500">Pump starts below this soil moisture</span>
+                </div>
+                <div class="flex items-center gap-1.5">
+                  <input type="number" id="t-thresh-input" value="30" min="15" max="50" onchange="updateThresholdSetting(this.value)" class="w-16 px-2.5 py-1.5 bg-slate-950 border border-slate-700 rounded-lg text-white font-bold text-xs text-center focus:outline-none">
+                  <span class="text-slate-400 font-bold">%</span>
+                </div>
+              </div>
+
+              <div class="p-3 rounded-xl bg-[#0a0f1d] border border-slate-800 space-y-1.5 text-[11px] text-slate-400">
+                <div class="flex justify-between">
+                  <span>Hardware Controller:</span>
+                  <span class="text-slate-200">ESP32 GPIO 18 -> 5V Relay</span>
+                </div>
+                <div class="flex justify-between">
+                  <span>Solenoid / Pump Model:</span>
+                  <span class="text-slate-200">12V DC Submersible (240 L/h)</span>
+                </div>
+                <div class="flex justify-between">
+                  <span>Failsafe Timeout:</span>
+                  <span class="text-blue-400">15 min max per cycle</span>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="mt-6 pt-4 border-t border-slate-800 flex gap-2">
+            <button id="btn-manual-toggle" onclick="togglePumpManual()" class="w-full py-2.5 bg-slate-800 hover:bg-slate-700 text-slate-200 border border-slate-700 font-semibold text-xs rounded-xl transition">
+              Force Pump ON (Manual Test)
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </main>
+
+  <footer class="bg-slate-950 border-t border-slate-800 py-6 text-xs text-slate-500 text-center">
+    <p>Smart Agriculture Sensor Telemetry & Closed-Loop Irrigation</p>
+  </footer>
+
+  <script src="js/app.js"></script>
+  <script src="js/telemetry.js"></script>
+</body>
+</html>
